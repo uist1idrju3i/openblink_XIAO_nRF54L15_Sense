@@ -38,5 +38,5 @@ $ git submodule update
 
 ## 開発環境バージョン
 
-- nRF Connect SDK toolchain v2.9.0
-- nRF Connect SDK v2.9.0
+- nRF Connect SDK toolchain v3.2.1
+- nRF Connect SDK v3.2.1

@@ -312,7 +312,7 @@ int ble_disconnect() {
  * @details Configures advertisement as connectable with 100-150ms interval
  */
 static const struct bt_le_adv_param adv_param = BT_LE_ADV_PARAM_INIT(
-    BT_LE_ADV_OPT_CONNECTABLE,  // | BT_LE_ADV_OPT_USE_IDENTITY,
+    BT_LE_ADV_OPT_CONN,  // | BT_LE_ADV_OPT_USE_IDENTITY,
     BT_GAP_ADV_FAST_INT_MIN_2,  // Advertisement interval (100ms)
     BT_GAP_ADV_FAST_INT_MAX_2,  // Advertisement interval (150ms)
     NULL);
