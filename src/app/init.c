@@ -23,7 +23,6 @@
 #include "app_version.h"
 #include "blink.h"
 #include "comm.h"
-#include "mrubyc_vm.h"
 #include "ncs_version.h"
 #include "storage.h"
 #include "version.h"

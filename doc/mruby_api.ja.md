@@ -99,7 +99,7 @@ end
 
 ## Blink クラス
 
-### req_reload? メソッド
+### req_reload? メソッド (廃止)
 
 #### 引数
 
@@ -107,14 +107,24 @@ end
 
 #### 戻り値 (bool)
 
-- true: リロード要求が存在する
-- false: リロード要求なし
+- false (本メソッドは廃止されましたが、互換性のために false を返します)
+
+### lock メソッド & unlock メソッド
+
+#### 引数
+
+なし
+
+#### 戻り値 (bool)
+
+- true: 成功
+- false: 失敗
 
 #### コード例
 
 ```ruby
-while true
-  return if Blink.req_reload?
-  # メイン処理
+if Blink.lock
+  # Blinkが許容されない処理
+  Blink.unlock
 end
 ```

@@ -99,7 +99,7 @@ end
 
 ## Blink 类
 
-### req_reload? 方法
+### req_reload? 方法 (已弃用)
 
 #### 参数
 
@@ -107,14 +107,24 @@ end
 
 #### 返回值 (bool)
 
-- true: 存在重载请求
-- false: 无重载请求
+- false（此方法已被弃用，但为兼容性考虑仍返回 false。）
+
+### lock 方法 & unlock 方法
+
+#### 参数
+
+无
+
+#### 返回值 (bool)
+
+- true: 成功
+- false: 失败
 
 #### 代码示例
 
 ```ruby
-while true
-  return if Blink.req_reload?
-  # 主要处理
+if Blink.lock
+  # 不允许Blink的处理
+  Blink.unlock
 end
 ```

@@ -4,7 +4,6 @@ sw2_last = Input.pressed?(part: :sw2)
 puts "Hello World!"
 
 while true
-  return if Blink.req_reload?
 
   led = !led
   led = true if Input.pressed?(part: :sw1)
