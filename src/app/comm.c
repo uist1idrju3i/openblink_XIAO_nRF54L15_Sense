@@ -41,7 +41,7 @@ static volatile bool connected = false;
  * @param param BLE event parameters
  * @return int 0 on success, negative on error
  */
-static int ble_event_cb(BLE_PARAM *param) {
+static int ble_event_cb(BLE_PARAM* param) {
   int err = 0;
   switch (param->event) {
     case BLE_EVENT_INITIALIZED:
@@ -67,7 +67,7 @@ static int ble_event_cb(BLE_PARAM *param) {
       break;
 
     case BLE_EVENT_BLINK:
-      uint8_t *blink_bytecode = (uint8_t *)param->blink.blink_bytecode;
+      uint8_t* blink_bytecode = (uint8_t*)param->blink.blink_bytecode;
       LOG_DBG("COMM: Blink ... Slot:%d Size:%d", param->blink.slot,
               param->blink.length);
 
@@ -90,7 +90,7 @@ static int ble_event_cb(BLE_PARAM *param) {
 
     case BLE_EVENT_RELOAD:
       LOG_DBG("COMM:Reloading ...");
-      app_mrubyc_vm_set_reload();
+      app_mrubyc_vm_restart();
       break;
 
     case BLE_EVENT_REBOOT:
@@ -123,7 +123,7 @@ fn_t comm_init(void) {
   bt_set_name(device_name);
 
   // Start Advertising
-  const char *name = bt_get_name();
+  const char* name = bt_get_name();
   LOG_DBG("COMM: Start advertising (%s)", name);
   ble_start_advertising(name);
   advertising = true;

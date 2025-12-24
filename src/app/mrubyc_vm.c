@@ -13,6 +13,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <zephyr/irq.h>
 #include <zephyr/kernel.h>
 #include <zephyr/logging/log.h>
 
@@ -42,10 +43,7 @@ LOG_MODULE_REGISTER(app_mrubyc_vm, LOG_LEVEL_DBG);
  */
 #define MRUBYC_VM_MAIN_STACK_SIZE (50 * 1024)
 
-/**
- * @brief Flag indicating if VM reload is pending
- */
-static bool request_mruby_reload = true;
+static mrbc_tcb* tcb[MAX_VM_COUNT] = {NULL};
 
 /**
  * @brief Loads bytecode from storage or default slots
@@ -54,7 +52,7 @@ static bool request_mruby_reload = true;
  * @param bytecode Buffer to store the bytecode
  * @param kLength Maximum length of the buffer
  */
-static void load_bytecode(const blink_slot_t kSlot, uint8_t *const bytecode,
+static void load_bytecode(const blink_slot_t kSlot, uint8_t* const bytecode,
                           const size_t kLength);
 
 /**
@@ -64,14 +62,14 @@ static void load_bytecode(const blink_slot_t kSlot, uint8_t *const bytecode,
  * @param unused2 Unused parameter
  * @param unused3 Unused parameter
  */
-static void mrubyc_vm_main(void *, void *, void *);
+static void mrubyc_vm_main(void*, void*, void*);
 
 /**
  * @brief Timer handler for the mruby/c VM
  *
  * @param timer Timer instance
  */
-static void mrubyc_timerhandler(struct k_timer *const timer) { mrbc_tick(); }
+static void mrubyc_timerhandler(struct k_timer* const timer) { mrbc_tick(); }
 
 /**
  * @brief Thread definition for the mruby/c VM main function
@@ -85,24 +83,38 @@ K_THREAD_DEFINE(th_mrubyc_vm_main, MRUBYC_VM_MAIN_STACK_SIZE, mrubyc_vm_main,
 K_TIMER_DEFINE(timer_mrubyc, mrubyc_timerhandler, NULL);
 
 /**
- * @brief Sets the reload flag for the mruby/c virtual machine
+ * @brief Mutex definition for the mruby/c VM restart
+ */
+K_MUTEX_DEFINE(mutex_mrubyc_vm_restart);
+
+/**
+ * @brief Restart the mruby/c virtual machine
  *
- * @details When set, the VM will reload bytecode on the next cycle
+ * @details The VM will restart
  *
  * @return fn_t kSuccess if successful
  */
-fn_t app_mrubyc_vm_set_reload(void) {
-  request_mruby_reload = true;
-  return kSuccess;
+fn_t app_mrubyc_vm_restart(void) {
+  if (0 == k_mutex_lock(&mutex_mrubyc_vm_restart, K_MSEC(1000))) {
+    k_sched_lock();
+    const unsigned int kIrqLockKey = irq_lock();
+    // =====
+    for (size_t i = 0; i < MAX_VM_COUNT; i++) {
+      if (NULL != tcb[i]) {
+        mrbc_terminate_task(tcb[i]);
+        mrbc_delete_task(tcb[i]);
+      }
+    }
+    // =====
+    irq_unlock(kIrqLockKey);
+    k_sched_unlock();
+    k_mutex_unlock(&mutex_mrubyc_vm_restart);
+    return kSuccess;
+  } else {
+    LOG_ERR("Failed to lock mutex_mrubyc_vm_restart");
+    return kFailure;
+  }
 }
-
-/**
- * @brief Gets the current state of the reload flag
- *
- * @return true if reload is pending
- * @return false if no reload is pending
- */
-bool app_mrubyc_vm_get_reload(void) { return request_mruby_reload; }
 
 /**
  * @brief Main function for the mruby/c VM thread
@@ -114,12 +126,14 @@ bool app_mrubyc_vm_get_reload(void) { return request_mruby_reload; }
  * @param unused2 Unused parameter
  * @param unused3 Unused parameter
  */
-static void mrubyc_vm_main(void *, void *, void *) {
+static void mrubyc_vm_main(void*, void*, void*) {
   int64_t timestamp = k_uptime_get();
   char buf_blink_time[100] = {0};
 
   while (1) {
-    mrbc_tcb *tcb[MAX_VM_COUNT] = {NULL};
+    for (size_t i = 0; i < MAX_VM_COUNT; i++) {
+      tcb[i] = NULL;
+    }
     uint8_t memory_pool[MRBC_HEAP_MEMORY_SIZE] = {0};
     uint8_t bytecode_slot1[BLINK_MAX_BYTECODE_SIZE] = {0};
     uint8_t bytecode_slot2[BLINK_MAX_BYTECODE_SIZE] = {0};
@@ -137,27 +151,6 @@ static void mrubyc_vm_main(void *, void *, void *) {
     api_input_define();  // Input.*
     api_ble_define();    // BLE.*
     api_blink_define();  // Blink.*
-
-    ////////////////////
-    // If no reload request, wait for request
-    if (false == request_mruby_reload) {
-#if CONFIG_DEBUG
-      uint8_t i = 99;
-      while (false == request_mruby_reload) {
-        k_msleep(100);
-        i++;
-        if (0 == (i % 100)) {
-          ble_print("Abnormal end was detected. Waiting for Blink.");
-          i = 0;
-        }
-      }
-#else
-      ble_print("Abnormal end was detected. Factory reset is in progress.");
-      init_factory_reset();
-#endif
-    }
-    // Clear reload request flag
-    request_mruby_reload = false;
 
     ////////////////////
     // Load mruby bytecode
@@ -207,7 +200,7 @@ static void mrubyc_vm_main(void *, void *, void *) {
  * @param bytecode Buffer to store the bytecode
  * @param kLength Maximum length of the buffer
  */
-static void load_bytecode(const blink_slot_t kSlot, uint8_t *const bytecode,
+static void load_bytecode(const blink_slot_t kSlot, uint8_t* const bytecode,
                           const size_t kLength) {
   ssize_t rc = 0;
   rc = blink_get_data_length(kSlot);

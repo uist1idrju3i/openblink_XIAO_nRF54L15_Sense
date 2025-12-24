@@ -15,20 +15,12 @@
 #include "../lib/fn.h"
 
 /**
- * @brief Sets the reload flag for the mruby/c virtual machine
+ * @brief Restart the mruby/c virtual machine
  *
- * @details When set, the VM will reload bytecode on the next cycle
+ * @details The VM will restart
  *
  * @return fn_t kSuccess if successful
  */
-fn_t app_mrubyc_vm_set_reload(void);
-
-/**
- * @brief Gets the current state of the reload flag
- *
- * @return true if reload is pending
- * @return false if no reload is pending
- */
-bool app_mrubyc_vm_get_reload(void);
+fn_t app_mrubyc_vm_restart(void);
 
 #endif

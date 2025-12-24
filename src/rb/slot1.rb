@@ -5,7 +5,6 @@
 printf "#{RUBY_ENGINE} #{MRUBYC_VERSION} (mruby:#{MRUBY_VERSION} ruby:#{RUBY_VERSION})\n"
 
 while true
-  return if Blink.req_reload?
 
   case BLE.state()
   when 0 # Off

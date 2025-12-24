@@ -99,7 +99,7 @@ end
 
 ## Blink Class
 
-### req_reload? Method
+### req_reload? Method (Deprecated)
 
 #### Arguments
 
@@ -107,14 +107,24 @@ None
 
 #### Return Value (bool)
 
-- true: Reload request exists
-- false: No reload request
+- false (This method has been deprecated, but returns false for compatibility.)
+
+### lock Method & unlock Method
+
+#### Arguments
+
+None
+
+#### Return Value (bool)
+
+- true: Success
+- false: Failure
 
 #### Code Example
 
 ```ruby
-while true
-  return if Blink.req_reload?
-  # Main processing
+if Blink.lock
+  # Processing that does not allow Blink
+  Blink.unlock
 end
 ```

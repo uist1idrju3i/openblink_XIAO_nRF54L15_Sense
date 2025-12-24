@@ -27,6 +27,7 @@ target_sources(app PRIVATE
                     mrubyc/src/c_math.c
                     mrubyc/src/c_numeric.c
                     mrubyc/src/c_object.c
+                    mrubyc/src/c_proc.c
                     mrubyc/src/c_range.c
                     mrubyc/src/c_string.c
                     mrubyc/src/class.c
