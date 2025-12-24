@@ -179,8 +179,6 @@ static void mrubyc_vm_main(void*, void*, void*) {
     mrbc_run();
     k_timer_stop(&timer_mrubyc);
 
-    k_mutex_unlock(&mutex_mrubyc_vm_restart);
-
     snprintf(buf_blink_time, sizeof(buf_blink_time),
              "mrbc_run Stopped (uptime: %lli ms)\n",
              k_uptime_delta(&timestamp));
