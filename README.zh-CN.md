@@ -1,9 +1,9 @@
-# OpenBlink
+# OpenBlink XIAO nRF54L15 Sense
 
 [![English](https://img.shields.io/badge/language-English-blue.svg)](README.md)
 [![中文](https://img.shields.io/badge/language-中文-red.svg)](README.zh-CN.md)
 [![日本語](https://img.shields.io/badge/language-日本語-green.svg)](README.ja.md)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OpenBlink/openblink)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/uist1idrju3i/openblink_XIAO_nRF54L15_Sense)
 
 ## OpenBlink 是什么
 
@@ -18,7 +18,7 @@
 要克隆仓库并初始化子模块，请运行以下命令：
 
 ```console
-$ git clone https://github.com/OpenBlink/openblink.git
+$ git clone https://github.com/uist1idrju3i/openblink_XIAO_nRF54L15_Sense.git
 $ git submodule init
 $ git submodule update
 
@@ -33,7 +33,7 @@ Please refer to https://wiki.seeedstudio.com/xiao_nrf54l15_sense_getting_started
 
 有关更详细的文档，请查看[doc](./doc)
 
-如需查阅 AI 驱动的全面文档以帮助您理解代码库，请访问 [DeepWiki](https://deepwiki.com/OpenBlink/openblink)
+如需查阅 AI 驱动的全面文档以帮助您理解代码库，请访问 [DeepWiki](https://deepwiki.com/uist1idrju3i/openblink_XIAO_nRF54L15_Sense)
 
 ## 已验证的硬件
 

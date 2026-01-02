@@ -1,9 +1,9 @@
-# OpenBlink
+# OpenBlink XIAO nRF54L15 Sense
 
 [![English](https://img.shields.io/badge/language-English-blue.svg)](README.md)
 [![中文](https://img.shields.io/badge/language-中文-red.svg)](README.zh-CN.md)
 [![日本語](https://img.shields.io/badge/language-日本語-green.svg)](README.ja.md)
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/OpenBlink/openblink)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/uist1idrju3i/openblink_XIAO_nRF54L15_Sense)
 
 ## OpenBlink とは
 
@@ -18,7 +18,7 @@
 リポジトリをクローンしてサブモジュールを初期化するには、以下のコマンドを実行してください：
 
 ```console
-$ git clone https://github.com/OpenBlink/openblink.git
+$ git clone https://github.com/uist1idrju3i/openblink_XIAO_nRF54L15_Sense.git
 $ git submodule init
 $ git submodule update
 
@@ -33,7 +33,7 @@ Please refer to https://wiki.seeedstudio.com/xiao_nrf54l15_sense_getting_started
 
 より詳細なドキュメントについては、[doc](./doc)をご確認ください。
 
-コードベースの理解を助ける AI 駆動の包括的なドキュメントは、[DeepWiki](https://deepwiki.com/OpenBlink/openblink)をご覧ください。
+コードベースの理解を助ける AI 駆動の包括的なドキュメントは、[DeepWiki](https://deepwiki.com/uist1idrju3i/openblink_XIAO_nRF54L15_Sense)をご覧ください。
 
 ## 検証済みハードウェア
 
