@@ -16,10 +16,12 @@ target_sources(app PRIVATE
                     src/api/blink.c
                     src/api/input.c
                     src/api/led.c
+                    src/api/pixels.c
                     src/api/symbol.c
                     src/drv/ble.c
                     src/drv/ble_blink.c
                     src/drv/gpio.c
+                    src/drv/led_strip.c
                     src/lib/mrubyc/hal.c
                     mrubyc/src/alloc.c
                     mrubyc/src/c_array.c

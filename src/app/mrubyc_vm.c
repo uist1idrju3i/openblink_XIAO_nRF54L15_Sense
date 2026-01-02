@@ -23,6 +23,7 @@
 #include "../api/blink.h"
 #include "../api/input.h"
 #include "../api/led.h"
+#include "../api/pixels.h"
 #include "../api/symbol.h"
 #include "../drv/ble.h"
 #include "../lib/fn.h"
@@ -147,10 +148,11 @@ static void mrubyc_vm_main(void*, void*, void*) {
       LOG_ERR("Failed to define symbol");
     }
     // Class, Method
-    api_led_define();    // LED.*
-    api_input_define();  // Input.*
-    api_ble_define();    // BLE.*
-    api_blink_define();  // Blink.*
+    api_led_define();     // LED.*
+    api_input_define();   // Input.*
+    api_ble_define();     // BLE.*
+    api_blink_define();   // Blink.*
+    api_pixels_define();  // PIXELS.*
 
     ////////////////////
     // Load mruby bytecode
