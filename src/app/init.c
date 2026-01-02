@@ -19,6 +19,7 @@
 
 #include "../api/symbol.h"
 #include "../drv/gpio.h"
+#include "../drv/led_strip.h"
 #include "../lib/fn.h"
 #include "app_version.h"
 #include "blink.h"
@@ -84,6 +85,7 @@ static int init_main(void) {
   ret = (kSuccess != api_symbol_init()) ? kFailure : ret;
   ret = (kSuccess != drv_gpio_init()) ? kFailure : ret;
   ret = (kSuccess != comm_init()) ? kFailure : ret;
+  ret = (kSuccess != drv_led_strip_init()) ? kFailure : ret;
 
   // ==============================
   // Result
