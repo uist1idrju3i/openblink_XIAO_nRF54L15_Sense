@@ -6,6 +6,8 @@ BRIGHTNESS_DIVISOR = 100  # 明るさを 1/100 にする (数値が大きいほ�
 
 # 0〜255の数値を受け取り、虹色のRGB(配列)を返すメソッド
 # Arduinoなどでよく使われる「Wheel」関数の移植です
+# Based on the "Wheel" function from Adafruit NeoPixel Library
+# https://github.com/adafruit/Adafruit_NeoPixel
 def color_wheel(pos)
   pos = pos % 255 # 0-255の範囲に収める
   
