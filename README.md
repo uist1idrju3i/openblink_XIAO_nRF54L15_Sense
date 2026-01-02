@@ -21,7 +21,13 @@ To clone the repository and initialize the submodules, run the following command
 $ git clone https://github.com/OpenBlink/openblink.git
 $ git submodule init
 $ git submodule update
+
+$ brew install ccache
+$ brew install openocd
+$ west flash
 ```
+
+Please refer to https://wiki.seeedstudio.com/xiao_nrf54l15_sense_getting_started/#download-burn-in-plug-in
 
 ## Documentation
 
@@ -33,8 +39,7 @@ For AI-powered comprehensive documentation that helps you understand the codebas
 
 The following hardware platforms have been tested with OpenBlink:
 
-- Nordic nRF54L15-DK (Board target: nrf54l15dk/nrf54l15/cpuapp)
-- Nordic nRF52840-DK (Board target: nrf52840dk/nrf52840)
+- Seeed XIAO nRF54L15 (Board target: xiao_nrf54l15/nrf54l15/cpuapp)
 
 ## Development Environment Versions
 

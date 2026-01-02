@@ -21,12 +21,7 @@
  */
 typedef enum {
   kSymbolLED1, /**< Symbol for LED1 */
-  kSymbolLED2, /**< Symbol for LED2 */
-  kSymbolLED3, /**< Symbol for LED3 */
   kSymbolSW1,  /**< Symbol for switch/button 1 */
-  kSymbolSW2,  /**< Symbol for switch/button 2 */
-  kSymbolSW3,  /**< Symbol for switch/button 3 */
-  kSymbolSW4,  /**< Symbol for switch/button 4 */
   kSymbolTSize /**< Total number of symbols (enum size) */
 } symbol_t;
 

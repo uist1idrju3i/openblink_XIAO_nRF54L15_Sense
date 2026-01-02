@@ -29,8 +29,8 @@ static void judge_factory_reset(void);
  */
 int main(void) {
   while (1) {
-    judge_factory_reset();
-    k_msleep(100);
+    //    judge_factory_reset()
+    k_msleep(1000);
   }
   return EXIT_FAILURE;
 }
@@ -45,31 +45,33 @@ int main(void) {
  * second
  */
 static void judge_factory_reset(void) {
-  static bool factory_reset_flag = false;
-  static uint16_t duration = 0;
-  if ((true == drv_gpio_get(kDrvGpioSW1)) &&
-      (true == drv_gpio_get(kDrvGpioSW4))) {
-    duration += 1;
-  } else {
-    duration = 0;
-    drv_gpio_set(kDrvGpioLED2, false);
-    if (true == factory_reset_flag) {
-      drv_gpio_set(kDrvGpioLED2, false);
-      init_reboot();
-    }
-  }
-  if ((50 <= duration) && (100 > duration)) {
-    if (0 == (duration % 2)) {
-      drv_gpio_set(kDrvGpioLED2, true);
+  /*
+    static bool factory_reset_flag = false;
+    static uint16_t duration = 0;
+    if ((true == drv_gpio_get(kDrvGpioSW1)) &&
+        (true == drv_gpio_get(kDrvGpioSW4))) {
+      duration += 1;
     } else {
+      duration = 0;
       drv_gpio_set(kDrvGpioLED2, false);
+      if (true == factory_reset_flag) {
+        drv_gpio_set(kDrvGpioLED2, false);
+        init_reboot();
+      }
     }
-  } else if (100 <= duration) {
-    if (false == factory_reset_flag) {
-      factory_reset_flag = true;
-      init_factory_reset();
-      drv_gpio_set(kDrvGpioLED2, true);
-      k_msleep(1000);
+    if ((50 <= duration) && (100 > duration)) {
+      if (0 == (duration % 2)) {
+        drv_gpio_set(kDrvGpioLED2, true);
+      } else {
+        drv_gpio_set(kDrvGpioLED2, false);
+      }
+    } else if (100 <= duration) {
+      if (false == factory_reset_flag) {
+        factory_reset_flag = true;
+        init_factory_reset();
+        drv_gpio_set(kDrvGpioLED2, true);
+        k_msleep(1000);
+      }
     }
-  }
+  */
 }

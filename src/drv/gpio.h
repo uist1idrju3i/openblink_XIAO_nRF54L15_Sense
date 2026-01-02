@@ -20,12 +20,7 @@
  */
 typedef enum {
   kDrvGpioSW1,  /**< Switch 1 */
-  kDrvGpioSW2,  /**< Switch 2 */
-  kDrvGpioSW3,  /**< Switch 3 */
-  kDrvGpioSW4,  /**< Switch 4 */
   kDrvGpioLED1, /**< LED 1 */
-  kDrvGpioLED2, /**< LED 2 */
-  kDrvGpioLED3, /**< LED 3 */
 } drv_gpio_t;
 
 /**

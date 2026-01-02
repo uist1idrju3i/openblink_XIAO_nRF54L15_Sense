@@ -21,20 +21,25 @@
 $ git clone https://github.com/OpenBlink/openblink.git
 $ git submodule init
 $ git submodule update
+
+$ brew install ccache
+$ brew install openocd
+$ west flash
 ```
+
+Please refer to https://wiki.seeedstudio.com/xiao_nrf54l15_sense_getting_started/#download-burn-in-plug-in
 
 ## ドキュメント
 
 より詳細なドキュメントについては、[doc](./doc)をご確認ください。
 
-コードベースの理解を助けるAI駆動の包括的なドキュメントは、[DeepWiki](https://deepwiki.com/OpenBlink/openblink)をご覧ください。
+コードベースの理解を助ける AI 駆動の包括的なドキュメントは、[DeepWiki](https://deepwiki.com/OpenBlink/openblink)をご覧ください。
 
 ## 検証済みハードウェア
 
 以下のハードウェアプラットフォームが OpenBlink でテスト済みです：
 
-- Nordic nRF54L15-DK (Board target: nrf54l15dk/nrf54l15/cpuapp)
-- Nordic nRF52840-DK (Board target: nrf52840dk/nrf52840)
+- Seeed XIAO nRF54L15 (Board target: xiao_nrf54l15/nrf54l15/cpuapp)
 
 ## 開発環境バージョン
 

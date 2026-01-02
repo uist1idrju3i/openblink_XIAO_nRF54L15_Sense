@@ -20,17 +20,12 @@
 LOG_MODULE_REGISTER(drv_gpio, LOG_LEVEL_DBG);
 
 /** @brief GPIO specifications for switches */
-static const struct gpio_dt_spec kSw[4] = {
-    GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios),
-    GPIO_DT_SPEC_GET(DT_ALIAS(sw1), gpios),
-    GPIO_DT_SPEC_GET(DT_ALIAS(sw2), gpios),
-    GPIO_DT_SPEC_GET(DT_ALIAS(sw3), gpios)};
+static const struct gpio_dt_spec kSw[1] = {
+    GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios)};
 
 /** @brief GPIO specifications for LEDs */
-static const struct gpio_dt_spec kLed[3] = {
-    GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios),
-    GPIO_DT_SPEC_GET(DT_ALIAS(led1), gpios),
-    GPIO_DT_SPEC_GET(DT_ALIAS(led2), gpios)};
+static const struct gpio_dt_spec kLed[1] = {
+    GPIO_DT_SPEC_GET(DT_ALIAS(led0), gpios)};
 
 /**
  * @brief Initializes the GPIO subsystem
@@ -56,7 +51,7 @@ fn_t drv_gpio_init(void) {
   // output
   for (size_t i = 0; i < sizeof(kLed) / sizeof(kLed[0]); i++) {
     if (true == gpio_is_ready_dt(&kLed[i])) {
-      if (0 > gpio_pin_configure_dt(&kLed[i], GPIO_OUTPUT_INACTIVE)) {
+      if (0 > gpio_pin_configure_dt(&kLed[i], GPIO_OUTPUT_ACTIVE)) {
         tmp_ret = kFailure;
         LOG_ERR("Failed to configure LED %d", i);
       }
@@ -83,21 +78,6 @@ bool drv_gpio_get(const drv_gpio_t kTgt) {
         return true;
       }
       break;
-    case kDrvGpioSW2:
-      if (1 == gpio_pin_get_dt(&kSw[1])) {
-        return true;
-      }
-      break;
-    case kDrvGpioSW3:
-      if (1 == gpio_pin_get_dt(&kSw[2])) {
-        return true;
-      }
-      break;
-    case kDrvGpioSW4:
-      if (1 == gpio_pin_get_dt(&kSw[3])) {
-        return true;
-      }
-      break;
     default:
       return false;
   }
@@ -116,12 +96,6 @@ fn_t drv_gpio_set(const drv_gpio_t kTgt, const bool kReq) {
   switch (kTgt) {
     case kDrvGpioLED1:
       gpio_pin_set_dt(&kLed[0], tmp_value);
-      return kSuccess;
-    case kDrvGpioLED2:
-      gpio_pin_set_dt(&kLed[1], tmp_value);
-      return kSuccess;
-    case kDrvGpioLED3:
-      gpio_pin_set_dt(&kLed[2], tmp_value);
       return kSuccess;
     default:
       return kFailure;

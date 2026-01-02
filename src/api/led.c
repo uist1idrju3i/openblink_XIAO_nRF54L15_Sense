@@ -29,7 +29,7 @@ LOG_MODULE_REGISTER(api_led, LOG_LEVEL_DBG);
  * @param v The value array
  * @param argc The argument count
  */
-static void c_set_led(mrb_vm *vm, mrb_value *v, int argc);
+static void c_set_led(mrb_vm* vm, mrb_value* v, int argc);
 
 /**
  * @brief Defines the LED class and methods for mruby/c
@@ -37,7 +37,7 @@ static void c_set_led(mrb_vm *vm, mrb_value *v, int argc);
  * @return fn_t kSuccess if successful, kFailure otherwise
  */
 fn_t api_led_define(void) {
-  mrb_class *class_led;
+  mrb_class* class_led;
   class_led = mrbc_define_class(0, "LED", mrbc_class_object);
   mrbc_define_method(0, class_led, "set", c_set_led);
   return kSuccess;
@@ -50,7 +50,7 @@ fn_t api_led_define(void) {
  * @param v The value array
  * @param argc The argument count
  */
-static void c_set_led(mrb_vm *vm, mrb_value *v, int argc) {
+static void c_set_led(mrb_vm* vm, mrb_value* v, int argc) {
   int16_t tgt = -1; /**< Target LED symbol ID */
   bool req = false; /**< Requested LED state */
   SET_FALSE_RETURN();
@@ -78,16 +78,6 @@ static void c_set_led(mrb_vm *vm, mrb_value *v, int argc) {
   // LED1
   if (api_symbol_get_id(kSymbolLED1) == tgt) {
     drv_gpio_set(kDrvGpioLED1, req);
-    SET_TRUE_RETURN();
-  }
-  // LED2
-  if (api_symbol_get_id(kSymbolLED2) == tgt) {
-    drv_gpio_set(kDrvGpioLED2, req);
-    SET_TRUE_RETURN();
-  }
-  // LED3
-  if (api_symbol_get_id(kSymbolLED3) == tgt) {
-    drv_gpio_set(kDrvGpioLED3, req);
     SET_TRUE_RETURN();
   }
 }

@@ -26,7 +26,7 @@ static int16_t symbol_id_table[kSymbolTSize];
  * @param kName The name of the symbol to register
  * @param kEnum The enum value to associate with the symbol
  */
-static void symbol_regist(const char *const kName, const symbol_t kEnum);
+static void symbol_regist(const char* const kName, const symbol_t kEnum);
 
 /**
  * @brief Initializes the symbol table for mruby/c
@@ -53,12 +53,7 @@ fn_t api_symbol_init(void) {
  */
 fn_t api_symbol_define(void) {
   symbol_regist("led1", kSymbolLED1);
-  symbol_regist("led2", kSymbolLED2);
-  symbol_regist("led3", kSymbolLED3);
   symbol_regist("sw1", kSymbolSW1);
-  symbol_regist("sw2", kSymbolSW2);
-  symbol_regist("sw3", kSymbolSW3);
-  symbol_regist("sw4", kSymbolSW4);
   for (size_t i = 0; i < kSymbolTSize; i++) {
     if (-1 == symbol_id_table[i]) {
       return kFailure;
@@ -87,7 +82,7 @@ int16_t api_symbol_get_id(const symbol_t kSymbol) {
  * @param kName The name of the symbol to register
  * @param kEnum The enum value to associate with the symbol
  */
-static void symbol_regist(const char *const kName, const symbol_t kEnum) {
+static void symbol_regist(const char* const kName, const symbol_t kEnum) {
   mrbc_symbol_new(0, kName);
   symbol_id_table[kEnum] = (int16_t)mrbc_search_symid(kName);
 }
