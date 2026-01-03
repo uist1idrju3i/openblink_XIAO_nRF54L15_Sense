@@ -1,62 +1,91 @@
 puts ("Hello Ruby")
 
-# LEDの設定
-NUM_LEDS = 60
-BRIGHTNESS_DIVISOR = 100  # 明るさを 1/100 にする (数値が大きいほど暗くなる)
+# LED設定
+WIDTH = 10
+HEIGHT = 6
+LED_COUNT = WIDTH * HEIGHT
+MAX_BRIGHTNESS = 20 # 輝度制限
 
-# 0〜255の数値を受け取り、虹色のRGB(配列)を返すメソッド
-# Arduinoなどでよく使われる「Wheel」関数の移植です
-# Based on the "Wheel" function from Adafruit NeoPixel Library
-# https://github.com/adafruit/Adafruit_NeoPixel
-def color_wheel(pos)
-  pos = pos % 255 # 0-255の範囲に収める
+# 円の中心座標
+CENTER_X = 4.5
+CENTER_Y = 2.5
+RADIUS = 3.5
+
+# HSV を RGB に変換するメソッド
+def hsv_to_rgb(h, s, v)
+  c = v * s
   
-  if pos < 85
-    r = 255 - pos * 3
-    g = 0
-    b = pos * 3
-  elsif pos < 170
-    pos -= 85
-    r = 0
-    g = pos * 3
-    b = 255 - pos * 3
+  # h / 60.0 の整数部と小数部を使って x を計算
+  h_sector = h / 60.0
+  sector_index = h_sector.to_i % 6
+  sector_fraction = h_sector - h_sector.to_i
+
+  # 修正箇所: even? の代わりに % 2 == 0 を使用
+  if sector_index % 2 == 0
+    x = c * sector_fraction
   else
-    pos -= 170
-    r = pos * 3
-    g = 255 - pos * 3
-    b = 0
+    x = c * (1 - sector_fraction)
   end
 
-  # 明るさ調整をして返す
-  [r / BRIGHTNESS_DIVISOR, g / BRIGHTNESS_DIVISOR, b / BRIGHTNESS_DIVISOR]
+  m = v - c
+
+  case sector_index
+  when 0
+    r, g, b = c, x, 0
+  when 1
+    r, g, b = x, c, 0
+  when 2
+    r, g, b = 0, c, x
+  when 3
+    r, g, b = 0, x, c
+  when 4
+    r, g, b = x, 0, c
+  else # 5
+    r, g, b = c, 0, x
+  end
+
+  [(r + m).to_i, (g + m).to_i, (b + m).to_i]
 end
 
-offset = 0
+# アニメーション用のカウンター
+tick = 0
 
-while true do
+while true
   if Input.pressed?(part: :sw1)
     puts ("SW1 pressed")
   end
-  
-  # 60個のLED全てに色をセット
-  (0...NUM_LEDS).each do |i|
-    # LEDの位置(i)と、時間の経過(offset)を足して色を決める
-    # 255.0 / NUM_LEDS は、虹色を60個で一周させるための係数(約4.25)
-    wheel_pos = ((i * 4) + offset)
-    
-    # RGBを取得
-    r, g, b = color_wheel(wheel_pos)
 
-    # LEDにセット
-    PIXELS.set(i, r, g, b)
+  10.times do |x|
+    6.times do |y|
+      
+      # 1. インデックスの計算 (右上が0, 左下が59)
+      col_from_right = 9 - x
+      index = (col_from_right * 6) + y
+
+      # 2. 円の判定
+      dx = x - CENTER_X
+      dy = y - CENTER_Y
+      distance = Math.sqrt(dx * dx + dy * dy)
+
+      if distance <= RADIUS
+        # 角度計算
+        angle = Math.atan2(dy, dx)
+        degree = angle * 180.0 / Math::PI
+        
+        # 色相計算 (整数にしてから % を計算)
+        hue = (degree + tick).to_i % 360
+        hue += 360 if hue < 0
+
+        r, g, b = hsv_to_rgb(hue, 1.0, MAX_BRIGHTNESS)
+        PIXELS.set(index, r, g, b)
+      else
+        PIXELS.set(index, 0, 0, 0)
+      end
+    end
   end
 
-  # LEDを点灯更新
   PIXELS.update
   
-  # 色をずらす（流れるアニメーション）
-  offset += 2
-  
-  # 少し待つ（0.01秒）
-  sleep 0.01
+  tick += 15
+  sleep_ms 30
 end

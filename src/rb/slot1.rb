@@ -16,7 +16,7 @@ while true
     LED.set(state: false, part: :led1)
     sleep_ms 500
   when 2 # Connected
-    LED.set(part: :led1, state: true)
+    LED.set(part: :led1, state: false)
     sleep_ms 100
   end
 
