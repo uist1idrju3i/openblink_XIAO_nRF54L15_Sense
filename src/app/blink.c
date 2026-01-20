@@ -33,7 +33,7 @@ static storage_id_t slot_to_storageid(const blink_slot_t kSlot);
  * @param name Buffer to store the device name
  * @param kBufSize Size of the buffer
  */
-void blink_get_name(char *const name, const size_t kBufSize) {
+void blink_get_name(char* const name, const size_t kBufSize) {
   char tmp_name[BLINK_DEVICE_NAME_SIZE] = {0};
   char dev_id[4 + 1] = {0};
   uint8_t buf[8] = {0x00U};
@@ -57,7 +57,7 @@ void blink_get_name(char *const name, const size_t kBufSize) {
  * @param kLength Maximum length of the buffer
  * @return ssize_t The number of bytes read, or negative on error
  */
-ssize_t blink_load(const blink_slot_t kSlot, void *const data,
+ssize_t blink_load(const blink_slot_t kSlot, void* const data,
                    const size_t kLength) {
   return storage_read(slot_to_storageid(kSlot), data, kLength);
 }
@@ -70,8 +70,9 @@ ssize_t blink_load(const blink_slot_t kSlot, void *const data,
  * @param kLength Length of the bytecode data
  * @return ssize_t The number of bytes written, or negative on error
  */
-ssize_t blink_store(const blink_slot_t kSlot, const void *const kData,
+ssize_t blink_store(const blink_slot_t kSlot, const void* const kData,
                     const size_t kLength) {
+  storage_delete(slot_to_storageid(kSlot));
   return storage_write(slot_to_storageid(kSlot), kData, kLength);
 }
 
